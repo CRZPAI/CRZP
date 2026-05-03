@@ -214,7 +214,7 @@ export default function Home() {
 
   /* ══════════════════════════════════════════════════════════════════════ */
   return (
-    <div className={cn("min-h-screen bg-background relative hide-scrollbars", !loc ? "h-screen pb-0" : "pb-12")} style={{ overflow: "auto" }}>
+    <div className={cn("min-h-screen bg-background relative hide-scrollbars", !loc ? "h-screen pb-0" : "pb-12")} style={{ overflowX: "hidden", overflowY: "auto" }}>
 
       {/* ── MOBILE GATE — visible only below lg (1024px) ─────────────────── */}
       <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center lg:hidden"
