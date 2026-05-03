@@ -26,7 +26,7 @@
 
 ---
 
-[Live Demo](https://crzp-apex-578360710770.us-central1.run.app) · [Documentation](https://crzp-apex-578360710770.us-central1.run.app/docs) · [Report a Bug](https://github.com/CRZP-AI/CRZP/issues) · [Request a Feature](https://github.com/CRZP-AI/CRZP/issues)
+[Live Demo](https://crzp-apex-578360710770.us-central1.run.app) · [Documentation](https://crzp-apex-578360710770.us-central1.run.app/docs) · [Report a Bug](https://github.com/CRZP-AI/CRZP/issues) · [X](https://x.com/crzp_ai) · [Request a Feature](https://github.com/CRZP-AI/CRZP/issues)
 
 </div>
 
