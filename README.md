@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/logo.png" alt="CRZP APEX Logo" width="310" />
+<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/logo.png" alt="CRZP APEX Logo" width="210" />
 
 <br />
 
