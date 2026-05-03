@@ -230,7 +230,7 @@ export function RiskLeaderboard({ onSelectLocation }: RiskLeaderboardProps) {
           <SortHeader label="Eco." sortKey="economic" current={sortKey} dir={sortDir} onSort={handleSort} />
         </div>
 
-        <div className="overflow-y-auto max-h-[480px] divide-y divide-border/50">
+        <div className="divide-y divide-border/50">
           <AnimatePresence initial={false}>
             {sorted.map((entry, idx) => {
               const color = getRiskColor(entry.score);
