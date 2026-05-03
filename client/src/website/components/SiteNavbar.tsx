@@ -31,7 +31,7 @@ export function SiteNavbar() {
           : "backdrop-blur-md border-b border-transparent bg-transparent"
       )}
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 h-[60px] flex items-center justify-between">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 h-[60px] flex items-center justify-between">
 
         {/* Brand */}
         <Link href="/landing">
