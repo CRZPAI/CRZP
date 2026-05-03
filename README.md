@@ -673,7 +673,8 @@ The Vite error overlay is intentionally disabled in this project to reduce noise
 ## Security
 
 - All external data is sourced from open, public APIs. Validate and sanitize any downstream usage in production workflows.
-- CRZP does not store user data, session information, or any personally identifiable information.
+- **Feedback data**: The `/api/feedback` endpoint accepts `name`, `email`, `message`, and `rating`. When a `RESEND_API_KEY` environment variable is set, this data is transmitted to the Resend email API. As a fallback, submissions are appended in plaintext to `logs/feedbacks.log` on disk. Do not expose this endpoint publicly without reviewing your data handling obligations.
+- Outside of the feedback endpoint, CRZP does not persist user interaction data or session state.
 - Regularly audit dependencies:
 
 ```bash
