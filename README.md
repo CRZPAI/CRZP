@@ -400,7 +400,7 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 
 <br />
 
-Built with precision by **[CRZP-AI](https://github.com/CRZP-AI)**
+Built with precision by **[Anas](https://github.com/i-anasop)**
 
 <br />
 
