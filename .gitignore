@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+vite.config.ts.*
+ml/__pycache__/
+*.pyc
+*.pyo
+logs/

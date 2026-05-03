@@ -1,0 +1,75 @@
+{
+  "model_type": "VotingClassifier (RandomForest \u00d7 200 + GradientBoosting \u00d7 150)",
+  "voting": "soft",
+  "n_features": 4,
+  "feature_names": [
+    "FSI Score (2024)",
+    "GPI Rank Normalized",
+    "Regional Code",
+    "Conflict Intensity (5yr)"
+  ],
+  "feature_importances": {
+    "FSI Score (2024)": 0.4695,
+    "GPI Rank Normalized": 0.3895,
+    "Conflict Intensity (5yr)": 0.0911,
+    "Regional Code": 0.0498
+  },
+  "n_training_samples": 135,
+  "n_train": 108,
+  "n_test": 27,
+  "label_names": [
+    "Low",
+    "Moderate",
+    "High",
+    "Extreme"
+  ],
+  "training_sources": [
+    "Fragile States Index 2024 (Fund for Peace)",
+    "Global Peace Index 2024 (Institute for Economics & Peace)",
+    "UCDP Georeferenced Event Dataset 2023 (Uppsala University)"
+  ],
+  "cv_accuracy_mean": 0.8444,
+  "cv_accuracy_std": 0.0593,
+  "cv_folds": 5,
+  "train_accuracy": 1.0,
+  "test_accuracy": 0.8889,
+  "class_distribution": {
+    "Low": 48,
+    "Moderate": 38,
+    "High": 32,
+    "Extreme": 17
+  },
+  "per_class_f1": {
+    "Low": 0.947,
+    "Moderate": 0.842,
+    "High": 0.8,
+    "Extreme": 1.0
+  },
+  "confusion_matrix": [
+    [
+      9,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      8,
+      0,
+      0
+    ],
+    [
+      0,
+      2,
+      4,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      3
+    ]
+  ],
+  "gpi_max_rank": 163.0
+}

@@ -1,0 +1,11 @@
+[project]
+name = "crzp"
+version = "2.0.0"
+description = "Crisis Risk Zone Predictor — Python ML engine"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.4.2",
+    "pandas>=3.0.1",
+    "requests>=2.32.5",
+    "scikit-learn>=1.8.0",
+]
