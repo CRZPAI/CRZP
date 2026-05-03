@@ -214,7 +214,7 @@ export default function Home() {
 
   /* ══════════════════════════════════════════════════════════════════════ */
   return (
-    <div className={cn("min-h-screen bg-background relative hide-scrollbars", !loc ? "h-screen pb-0" : "pb-12")} style={{ overflowX: "hidden", overflowY: "auto" }}>
+    <div className={cn("min-h-screen bg-background relative hide-scrollbars", !loc ? "h-screen pb-0" : "pb-12")} style={{ overflowY: "auto", width: "100%" }}>
 
       {/* ── MOBILE GATE — visible only below lg (1024px) ─────────────────── */}
       <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center lg:hidden"
@@ -343,7 +343,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.5 }}
-            className="relative min-h-screen overflow-visible hide-scrollbars"
+            className="relative min-h-screen overflow-x-hidden hide-scrollbars"
           >
             {/* Particle background */}
             <ParticleCanvas />
@@ -368,7 +368,7 @@ export default function Home() {
               className="fixed top-0 inset-x-0 z-[9999] border-b border-white/[0.06]"
               style={{ background: "rgba(4,7,18,0.75)", backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)" }}
             >
-            <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 h-[60px] flex items-center justify-between">
+            <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 h-[60px] flex items-center justify-between">
               {/* Left: brand */}
               <a href="/" className="flex items-center gap-3 group" title="CRZP APEX">
                 <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500 shadow-lg flex-shrink-0 group-hover:bg-amber-400 transition-colors">
@@ -433,7 +433,7 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                   title="X (Twitter)"
-                  className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-white/[0.08] text-white/50 hover:border-amber-400/35 hover:text-amber-300 hover:bg-amber-500/[0.07] transition-all duration-150"
+                  className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-white/20 bg-white/[0.06] text-white/80 hover:border-amber-400/60 hover:text-amber-300 hover:bg-amber-500/[0.12] shadow-[0_1px_3px_rgba(0,0,0,0.3)] transition-all duration-150"
                 >
                   <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -443,17 +443,17 @@ export default function Home() {
                   href="https://github.com/i-anasop/CRZP"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-white/[0.08] text-white/50 text-[11px] font-semibold uppercase tracking-wider hover:border-amber-400/35 hover:text-amber-300 hover:bg-amber-500/[0.07] transition-all duration-150"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/20 bg-white/[0.06] text-white/80 text-[11px] font-semibold uppercase tracking-wider hover:border-amber-400/60 hover:text-amber-300 hover:bg-amber-500/[0.12] shadow-[0_1px_3px_rgba(0,0,0,0.3)] transition-all duration-150"
                 >
                   <Github className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">GitHub</span>
                 </a>
                 <a
                   href="/landing"
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-white/[0.08] text-white/50 text-[11px] font-semibold uppercase tracking-wider hover:border-amber-400/35 hover:text-amber-300 hover:bg-amber-500/[0.07] transition-all duration-150"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-500/70 bg-amber-500 text-black text-[11px] font-bold uppercase tracking-wider hover:bg-amber-400 hover:border-amber-400 shadow-[0_0_16px_rgba(245,158,11,0.35)] transition-all duration-150"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Site</span>
+                  <span className="hidden sm:inline">Portal</span>
                 </a>
               </div>
             </div>
@@ -462,7 +462,7 @@ export default function Home() {
 
 
             {/* ── MAIN HERO LAYOUT ──────────────────────────────────────── */}
-            <div className="relative w-full min-h-screen flex overflow-visible hide-scrollbars px-6 sm:px-10 lg:px-16 xl:px-28">
+            <div className="relative w-full min-h-screen flex overflow-x-hidden hide-scrollbars px-6 sm:px-10 lg:px-16 xl:px-28">
 
               {/* Left content panel — floats over left half */}
               <motion.div
@@ -588,15 +588,18 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.1, delay: 0.1, ease: "easeOut" }}
                 className="absolute inset-y-0 right-0 hidden lg:flex items-center z-0 overflow-visible"
-                style={{ width: "72%", paddingRight: "0%", transform: "translateX(6%)" }}
+                style={{ width: "68%" }}
               >
-                <div className="relative w-full h-full flex items-center justify-center overflow-visible">
-                  {/* Deep blue ambient core */}
-                  <div className="absolute w-[620px] h-[620px] rounded-full pointer-events-none"
-                    style={{ background: "radial-gradient(circle, rgba(30,80,200,0.14) 0%, rgba(10,30,90,0.07) 55%, transparent 80%)", filter: "blur(40px)" }} />
-                  {/* Amber outer corona */}
-                  <div className="absolute w-[820px] h-[820px] rounded-full pointer-events-none"
-                    style={{ background: "radial-gradient(circle, transparent 38%, rgba(245,158,11,0.06) 58%, transparent 78%)", filter: "blur(32px)" }} />
+                <div className="relative w-full h-full flex items-center justify-center">
+                  {/* Blobs clipped in their own layer so they don't trigger scroll */}
+                  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {/* Deep blue ambient core */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] rounded-full"
+                      style={{ background: "radial-gradient(circle, rgba(30,80,200,0.14) 0%, rgba(10,30,90,0.07) 55%, transparent 80%)", filter: "blur(40px)" }} />
+                    {/* Amber outer corona */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[820px] h-[820px] rounded-full"
+                      style={{ background: "radial-gradient(circle, transparent 38%, rgba(245,158,11,0.06) 58%, transparent 78%)", filter: "blur(32px)" }} />
+                  </div>
 
                   {/* ── HUD corner brackets ─────────────────────────────── */}
                   <div className="absolute pointer-events-none z-10" style={{ width: 560, height: 560 }}>
