@@ -1,277 +1,728 @@
-# CRZP (Crisis Risk Zone Predictor)
+<div align="center">
 
-CRZP is a full-stack geopolitical risk intelligence platform that combines a React dashboard, an Express API layer, and a Python ML risk engine.
+<img src="https://img.shields.io/badge/CRZP-APEX-f59e0b?style=for-the-badge&labelColor=020617&color=f59e0b" alt="CRZP APEX" />
 
-Given a city, region, or country, CRZP computes a real-time composite risk score (0-100) and returns:
-- risk tier + confidence metadata,
-- multi-factor breakdown (military, political, economic, social, humanitarian),
-- incidents and live signal context,
-- trend and momentum indicators,
-- country profile and briefing information.
+# CRZP APEX
+### Crisis Risk Zone Predictor — Geopolitical Intelligence Platform
+
+**Real-time AI-powered risk scoring for any city, country, or region on Earth.**
+
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-ML%20Engine-F7931E?style=flat-square&logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-white?style=flat-square)](LICENSE)
+
+---
+
+> 🏆 **Google AI Seekho 2026 — Phase 1 Project**
+> Built as part of Google's AI Seekho initiative to democratize access to AI-powered tools for social impact.
+
+---
+
+[Live Demo](https://crzp.replit.app) · [Documentation](https://crzp.replit.app/docs) · [Report a Bug](https://github.com/i-anasop/CRZP/issues) · [Request a Feature](https://github.com/i-anasop/CRZP/issues)
+
+</div>
+
+---
 
 ## Table of Contents
-- Overview
-- Architecture
-- Repository Layout
-- Technology Stack
-- Data Flow
-- API Reference
-- Local Development Setup
-- Build and Production
-- Configuration
-- Troubleshooting
-- Security Notes
-- Roadmap
 
-## Overview
+- [What is CRZP?](#what-is-crzp)
+- [Key Features](#key-features)
+- [System Architecture](#system-architecture)
+- [Technology Stack](#technology-stack)
+- [ML & Data Pipeline](#ml--data-pipeline)
+- [API Reference](#api-reference)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Build & Production](#build--production)
+- [Troubleshooting](#troubleshooting)
+- [Security](#security)
+- [Roadmap](#roadmap)
+- [About Google AI Seekho](#about-google-ai-seekho)
+- [License](#license)
 
-CRZP is designed for analysts, researchers, and teams that need rapid risk context for global locations.
+---
 
-Core capabilities:
-- global location search/autocomplete,
-- real-time risk analysis via Python backend integration,
-- interactive globe + risk visualization components,
-- side-by-side comparison between two locations,
-- API-first architecture with shared TypeScript contracts.
+## What is CRZP?
 
-## Architecture
+**CRZP APEX** (Crisis Risk Zone Predictor) is a full-stack geopolitical intelligence platform that computes a real-time composite **Risk Score (0–100)** for any city, country, or region on Earth. It fuses live global event data with a trained ML ensemble to give analysts, researchers, and security teams an instant, structured picture of geopolitical risk.
 
-The app runs as a Node process hosting both API routes and the frontend (in dev via Vite middleware):
+Think of it as a radar system for global instability — pulling signals from humanitarian incident databases, news event streams, and trained geopolitical baselines, then delivering a clean intelligence brief in seconds.
 
-1. User enters a location in the client.
-2. Client calls `GET /api/risk/analyze?location=...`.
-3. Express route proxies the request to a persistent Python ML server on `127.0.0.1:5001`.
-4. Python model fuses baseline data + live-source signals and returns normalized JSON.
-5. Node returns the result to the React UI.
+### Why it exists
 
-Runtime services:
-- Node/Express app: `0.0.0.0:5000`
-- Python ML service: `127.0.0.1:5001` (auto-launched by Node)
+Traditional risk assessment tools are expensive, opaque, or delayed by days. CRZP makes real-time geopolitical risk intelligence **open, fast, and explainable** — powered by public data sources and a transparent ML pipeline.
 
-## Repository Layout
+---
+
+## Key Features
+
+| Feature | Description |
+|---|---|
+| **Universal Location Search** | Autocomplete for any city, country, or region worldwide via Nominatim geocoding |
+| **Real-Time Risk Score** | Composite 0–100 RSI (Risk Severity Index) computed on every request |
+| **5-Axis Risk Breakdown** | Kinetic · Political · Economic · Social · Humanitarian dimensions |
+| **Live Incident Feed** | Streaming events from GDELT and ReliefWeb, filtered and ranked by recency |
+| **AI Threat Briefing** | Auto-generated natural language summary of the threat landscape |
+| **Temporal Trend Charts** | 7-day RSI trajectory with drift velocity and acceleration indicators |
+| **Dual-Location Comparison** | Side-by-side pane comparison of any two locations |
+| **Proximity Radar** | Visualizes nearby risk zones relative to a selected target |
+| **Watchlist** | Persist high-priority locations across sessions |
+| **Risk Leaderboard** | Global ranking of highest-risk zones updated in real time |
+| **Interactive 3D Globe** | Canvas-rendered globe with crisis arc connections and hotspot rings |
+| **ML Ensemble Confidence** | Reports model confidence alongside every prediction |
+
+---
+
+## System Architecture
 
 ```
-client/
-  src/
-    components/         Reusable UI and dashboard components
-    hooks/              Data hooks (querying, debounce, mobile helpers)
-    lib/                Shared frontend utilities and query client
-    pages/              Top-level route pages
-
-server/
-  index.ts              Express bootstrap + middleware + error handler
-  routes.ts             API endpoints + Python bridge + cache
-  ml_model.py           Python ML inference server
-  model.pkl             Trained model artifact
-  model_metadata.json   Training/meta information
-  vite.ts               Dev-time Vite integration
-  static.ts             Production static file serving
-
-shared/
-  schema.ts             Shared Zod schemas
-  routes.ts             Shared route contracts
-
-script/
-  build.ts              Build orchestration script
+┌──────────────────────────────────────────────────────────────┐
+│                        Browser Client                         │
+│   React 18 · TypeScript · Vite · Tailwind · Framer Motion    │
+│                                                              │
+│  ┌─────────────┐  ┌──────────────┐  ┌────────────────────┐  │
+│  │  Dashboard  │  │ Landing Page │  │   Docs / Website   │  │
+│  │  (/)        │  │  (/landing)  │  │   (/docs)          │  │
+│  └──────┬──────┘  └──────────────┘  └────────────────────┘  │
+│         │  TanStack Query (REST)                              │
+└─────────┼────────────────────────────────────────────────────┘
+          │ HTTP  GET /api/*
+          ▼
+┌─────────────────────────────┐
+│     Node.js / Express 5     │  PORT 5000
+│                             │
+│  ┌──────────────────────┐   │
+│  │   Route Handlers     │   │
+│  │  • /api/locations/*  │   │
+│  │  • /api/risk/*       │   │
+│  │  • /api/model-info   │   │
+│  └──────────┬───────────┘   │
+│             │               │
+│  ┌──────────▼───────────┐   │
+│  │  In-Memory Cache     │   │
+│  │  (5-min TTL)         │   │
+│  └──────────┬───────────┘   │
+│             │ HTTP  localhost:5001
+│             ▼               │
+│  ┌──────────────────────┐   │
+│  │  Python ML Server    │   │  PORT 5001 (auto-launched)
+│  │  ml/ml_model.py      │   │
+│  │                      │   │
+│  │  VotingClassifier    │   │
+│  │  + TF-IDF + rules    │   │
+│  └──────────┬───────────┘   │
+└─────────────┼───────────────┘
+              │ Concurrent outbound fetches
+              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    External Data Sources                      │
+│                                                             │
+│  ┌──────────┐  ┌───────────┐  ┌──────────┐  ┌──────────┐  │
+│  │  GDELT   │  │ ReliefWeb │  │Nominatim │  │REST      │  │
+│  │  2.0     │  │  UN API   │  │  (OSM)   │  │Countries │  │
+│  │ Live RSS │  │ Incidents │  │ Geocoder │  │ Profiles │  │
+│  └──────────┘  └───────────┘  └──────────┘  └──────────┘  │
+└─────────────────────────────────────────────────────────────┘
 ```
+
+### Runtime Services
+
+| Service | Host | Port | Purpose |
+|---|---|---|---|
+| Node/Express API + Vite | `0.0.0.0` | `5000` | Serves UI and all API routes |
+| Python ML Server | `127.0.0.1` | `5001` | Risk inference, auto-launched by Node |
+
+---
 
 ## Technology Stack
 
-Frontend:
-- React 18 + TypeScript
-- Vite
-- Tailwind CSS + Radix UI primitives
-- Framer Motion
-- Recharts + custom globe rendering
+### Frontend
 
-Backend:
-- Node.js + Express 5
-- TypeScript (`tsx` runtime in development)
+| Technology | Version | Role |
+|---|---|---|
+| React | 18.3 | UI framework |
+| TypeScript | 5.6 | Type safety across the full stack |
+| Vite | 7.x | Dev server and production bundler |
+| Tailwind CSS | 3.4 | Utility-first styling |
+| Radix UI | Latest | Accessible, unstyled component primitives |
+| Framer Motion | 11.x | Animations and transitions |
+| Recharts | 2.x | Risk trend charts and data visualizations |
+| TanStack Query | 5.x | Server state, caching, and request management |
+| Wouter | 3.x | Lightweight client-side routing |
+| Lucide React | 0.453 | Icon system |
 
-ML / Data Engine:
-- Python 3.11+
-- scikit-learn, pandas, numpy
-- requests + concurrent futures
-- Local model artifact (`server/model.pkl`) with graceful fallback behavior
+### Backend
 
-External Signal/Data Sources:
-- GDELT 2.0
-- ReliefWeb
-- Nominatim (OpenStreetMap)
-- REST Countries
-- Wikipedia REST
+| Technology | Version | Role |
+|---|---|---|
+| Node.js | 20+ | Runtime |
+| Express | 5.x | HTTP server and API routing |
+| TypeScript + `tsx` | 5.6 | Type-safe server with zero compile step in dev |
 
-## Data Flow
+### Machine Learning & Data
 
-Risk analysis combines multi-tier baselines and live inputs:
+| Technology | Role |
+|---|---|
+| Python 3.11+ | ML inference server runtime |
+| scikit-learn | VotingClassifier ensemble (RandomForest + GradientBoosting + SVM) |
+| pandas + numpy | Feature engineering and data wrangling |
+| TF-IDF Vectorizer | Text similarity for location fuzzy matching |
+| pickle | Trained model artifact serialization (`ml/model.pkl`) |
+| GDELT 2.0 | Live global event stream (RSS + API) |
+| ReliefWeb | UN humanitarian incident database |
+| Nominatim (OSM) | Location geocoding and autocomplete |
+| REST Countries | Country profile data (population, capital, region) |
+| Wikipedia REST | Supplementary country context |
 
-1. Tier 1: city/zone profile map (high-resolution known hotspots).
-2. Tier 2: country baseline calibration.
-3. Tier 3: regional baseline fallback.
-4. Live signal enrichment from recent event/news patterns.
-5. Composite scoring and dimensional breakdown generation.
+---
 
-Server-side behavior:
-- in-memory result cache with TTL,
-- timeout-protected outbound data fetches,
-- error-tolerant fallbacks so partial-source failures do not crash responses.
+## ML & Data Pipeline
+
+Every risk analysis request goes through a **5-tier scoring pipeline**:
+
+```
+Request: location="Beirut"
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│ TIER 1 — City / Zone Profile Lookup                     │
+│ Hardcoded intelligence DB of known crisis hotspots.     │
+│ High-resolution baseline for cities in active conflict. │
+└───────────────────────────┬─────────────────────────────┘
+                            │ if no city match
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│ TIER 2 — Country Baseline (GPI-Calibrated)              │
+│ Global Peace Index–calibrated country risk baselines.   │
+│ Covers 180+ countries with composite starting scores.   │
+└───────────────────────────┬─────────────────────────────┘
+                            │ if no country match
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│ TIER 3 — Regional Baseline Fallback                     │
+│ Broad regional risk estimates (Middle East, Sub-Saharan  │
+│ Africa, South Asia, etc.) as a last resort baseline.    │
+└───────────────────────────┬─────────────────────────────┘
+                            │ always applied on top
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│ TIER 4 — Live Signal Enrichment                         │
+│ Concurrent fetches from GDELT and ReliefWeb.            │
+│ • GDELT: counts crisis keywords in recent event titles   │
+│ • ReliefWeb: counts active humanitarian incidents        │
+│ • Sentiment scoring on article text                     │
+│ → keyword_boost + sentiment_boost applied to base score │
+└───────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│ TIER 5 — ML Ensemble Override                           │
+│ Trained VotingClassifier (soft voting):                  │
+│   • RandomForestClassifier                              │
+│   • GradientBoostingClassifier                          │
+│   • SVC (probability=True)                              │
+│ Features: [base_score, keyword_count, sentiment,        │
+│            incident_count, country_gpi_rank]            │
+│ → Overrides rule-based score when confidence ≥ 0.6      │
+└───────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼
+                 ┌──────────────────┐
+                 │  Final Response  │
+                 │  riskScore: 0–100│
+                 │  riskLevel: str  │
+                 │  breakdown: {}   │
+                 │  confidence: f   │
+                 │  incidents: []   │
+                 │  trend: {}       │
+                 └──────────────────┘
+```
+
+### Resilience Design
+
+- All outbound fetches run with **timeouts** — a slow data source never blocks the response
+- **Graceful degradation**: if the ML model is unavailable, falls back to the rule-based tier pipeline
+- **Auto-restart**: if the Python server crashes, Node relaunches it automatically after 2 seconds
+- **In-memory cache** (5-min TTL) prevents redundant ML calls for repeated locations
+
+---
 
 ## API Reference
 
 Base URL (local): `http://localhost:5000`
 
-### 1) Search locations
-`GET /api/locations/search?q=<query>`
+---
 
-Returns location suggestions from Nominatim.
+### `GET /api/locations/search`
 
-### 2) Analyze risk
-`GET /api/risk/analyze?location=<location>`
+Search for location suggestions (autocomplete).
 
-Returns full analysis payload for one location.
+**Query Parameters**
 
-Response highlights:
-- `riskScore`, `riskLevel`
-- `breakdown` (military/political/economic/social/humanitarian)
-- `incidents`, `news`, `trend`
-- `countryProfile`
-- `mlPrediction`
-- `escalationMomentum`
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `q` | string | Yes | Search query (city, country, or region) |
 
-### 3) Compare locations
-`GET /api/risk/compare?loc1=<locationA>&loc2=<locationB>`
+**Example Request**
+```bash
+curl "http://localhost:5000/api/locations/search?q=Baghdad"
+```
 
-Returns side-by-side analysis objects.
+**Example Response**
+```json
+[
+  {
+    "name": "Baghdad",
+    "country": "Iraq",
+    "lat": 33.3128,
+    "lon": 44.3615,
+    "type": "city"
+  }
+]
+```
 
-### 4) Model metadata
-`GET /api/model-info`
+---
 
-Returns model/training metadata when available.
+### `GET /api/risk/analyze`
 
-### 5) Cache control
-`DELETE /api/risk/cache`
-`DELETE /api/risk/cache?location=<location>`
+Compute a full risk analysis for a single location.
 
-Clears all cache entries or a specific location key.
+**Query Parameters**
 
-## Local Development Setup
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `location` | string | Yes | City, country, or region name |
+
+**Example Request**
+```bash
+curl "http://localhost:5000/api/risk/analyze?location=Kabul"
+```
+
+**Example Response**
+```json
+{
+  "location": "Kabul",
+  "country": "Afghanistan",
+  "riskScore": 91,
+  "riskLevel": "CRITICAL",
+  "confidence": 0.94,
+  "breakdown": {
+    "military":      88,
+    "political":     92,
+    "economic":      85,
+    "social":        79,
+    "humanitarian":  96
+  },
+  "escalationMomentum": "accelerating",
+  "trend": {
+    "direction": "up",
+    "velocity": 3.2,
+    "sevenDayDelta": 8
+  },
+  "incidents": [
+    {
+      "title": "IED blast reported in Kabul district",
+      "date": "2026-05-01",
+      "source": "ReliefWeb",
+      "severity": "high",
+      "is_realtime": true
+    }
+  ],
+  "newsStats": {
+    "total": 42,
+    "negative": 38,
+    "sentimentScore": -0.81
+  },
+  "countryProfile": {
+    "capital": "Kabul",
+    "population": 40754388,
+    "region": "Southern Asia",
+    "flag": "🇦🇫"
+  },
+  "mlPrediction": {
+    "label": "CRITICAL",
+    "confidence": 0.94,
+    "modelUsed": true
+  }
+}
+```
+
+---
+
+### `GET /api/risk/compare`
+
+Compare two locations side by side.
+
+**Query Parameters**
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `loc1` | string | Yes | First location |
+| `loc2` | string | Yes | Second location |
+
+**Example Request**
+```bash
+curl "http://localhost:5000/api/risk/compare?loc1=Tehran&loc2=Riyadh"
+```
+
+**Example Response**
+```json
+{
+  "location1": { /* full analysis object for Tehran */ },
+  "location2": { /* full analysis object for Riyadh */ }
+}
+```
+
+---
+
+### `GET /api/model-info`
+
+Returns metadata about the trained ML model.
+
+**Example Response**
+```json
+{
+  "model_type": "VotingClassifier",
+  "trained_at": "2025-11-14T10:32:00Z",
+  "accuracy": 0.942,
+  "features": ["base_score", "keyword_count", "sentiment", "incident_count", "gpi_rank"],
+  "classes": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+}
+```
+
+---
+
+### `DELETE /api/risk/cache`
+
+Clears the in-memory result cache.
+
+| Variant | Effect |
+|---|---|
+| `DELETE /api/risk/cache` | Clears all cached results |
+| `DELETE /api/risk/cache?location=Kabul` | Clears only the specified location |
+
+---
+
+## Project Structure
+
+```
+CRZP/
+├── client/                        # React frontend
+│   ├── index.html
+│   ├── public/
+│   │   ├── favicon.png
+│   │   └── founder.png
+│   └── src/
+│       ├── App.tsx                # Root router (Wouter)
+│       ├── main.tsx               # React entry point
+│       ├── index.css              # Global styles + Tailwind
+│       │
+│       ├── app/                   # Intelligence dashboard (route: /)
+│       │   ├── components/        # Dashboard-specific components
+│       │   │   ├── GlobeView.tsx      # Interactive 3D globe
+│       │   │   ├── ThreatBriefing.tsx # AI-generated threat brief
+│       │   │   ├── ProximityRadar.tsx # Nearby risk radar
+│       │   │   ├── TrendChart.tsx     # RSI trend visualization
+│       │   │   ├── IncidentCard.tsx   # Live incident display
+│       │   │   ├── LiveNewsFeed.tsx   # Real-time news feed
+│       │   │   ├── RiskLeaderboard.tsx
+│       │   │   ├── WatchlistPanel.tsx
+│       │   │   ├── CountryProfile.tsx
+│       │   │   ├── RiskBreakdownChart.tsx
+│       │   │   └── SearchBox.tsx
+│       │   └── pages/
+│       │       └── Home.tsx           # Main dashboard page
+│       │
+│       ├── website/               # Marketing website
+│       │   ├── components/
+│       │   │   ├── Globe3D.tsx        # Canvas-based animated globe
+│       │   │   ├── SiteNavbar.tsx     # Top navigation bar
+│       │   │   ├── SiteFooter.tsx
+│       │   │   └── TiltCard.tsx
+│       │   └── pages/
+│       │       ├── Landing.tsx        # Hero / marketing page (/landing)
+│       │       └── Docs.tsx           # API documentation (/docs)
+│       │
+│       ├── shared/                # Shared UI components
+│       │   └── components/
+│       │       ├── ParticleCanvas.tsx
+│       │       └── RippleReveal.tsx
+│       │
+│       ├── components/ui/         # Radix UI / shadcn component library
+│       ├── hooks/                 # Custom React hooks
+│       │   ├── use-risk.ts            # Risk analysis + comparison queries
+│       │   ├── use-locations.ts       # Location search query
+│       │   ├── use-debounce.ts
+│       │   └── use-mobile.tsx
+│       └── lib/
+│           ├── utils.ts               # cn(), getRiskColor(), helpers
+│           └── queryClient.ts         # TanStack Query configuration
+│
+├── server/                        # Node.js / Express backend
+│   ├── index.ts                   # App bootstrap, middleware, error handler
+│   ├── routes.ts                  # All API routes + Python ML bridge + cache
+│   ├── vite.ts                    # Dev-time Vite integration
+│   └── static.ts                  # Production static file serving
+│
+├── ml/                            # Python ML engine
+│   ├── ml_model.py                # Full ML inference server (Flask-free HTTP)
+│   ├── train_model.py             # Model training script
+│   ├── model.pkl                  # Trained VotingClassifier artifact
+│   └── model_metadata.json        # Training metrics and configuration
+│
+├── shared/                        # Shared TypeScript contracts
+│   ├── schema.ts                  # Zod validation schemas
+│   └── routes.ts                  # Typed API route constants
+│
+├── script/
+│   └── build.ts                   # Production build orchestration
+│
+├── package.json
+├── tsconfig.json
+├── tailwind.config.ts
+├── vite.config.ts
+├── postcss.config.js
+├── pyproject.toml                 # Python dependency declaration
+└── uv.lock
+```
+
+---
+
+## Getting Started
 
 ### Prerequisites
-- Node.js 20+ (24.x tested)
-- npm 10+
-- Python 3.11+
-- Internet access for live external signal providers
 
-### 1) Install dependencies
+Ensure the following are installed on your machine:
+
+| Requirement | Minimum Version | Check |
+|---|---|---|
+| Node.js | 20.x | `node --version` |
+| npm | 10.x | `npm --version` |
+| Python | 3.11+ | `python3 --version` |
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/i-anasop/CRZP.git
+cd CRZP
+```
+
+### 2. Install Node dependencies
 
 ```bash
 npm install
 ```
 
-### 2) Python dependencies
+### 3. Install Python dependencies
 
-Python dependencies are declared in `pyproject.toml`.
-
-If you use `uv`:
-
+**Using `uv` (recommended — fast):**
 ```bash
+pip install uv        # if uv is not already installed
 uv sync
 ```
 
-If you use `pip`:
-
+**Using `pip` (standard):**
 ```bash
-python -m pip install numpy pandas python-docx requests scikit-learn
+pip install numpy pandas scikit-learn requests
 ```
 
-### 3) Run in development
+### 4. Run in development mode
 
 ```bash
 npm run dev
 ```
 
-The app serves at:
-- UI + API: `http://localhost:5000`
+This single command:
+- Starts the Express API server on **port 5000**
+- Launches the Vite dev server with HMR
+- Auto-starts the Python ML server on port 5001 in the background
 
-The Python model server is auto-started by Node.
+Open your browser at: **[http://localhost:5000](http://localhost:5000)**
 
-### 4) Type-check
+> The app will be fully functional once the terminal shows:
+> ```
+> [ml] Python ML server ready on port 5001
+> ```
+
+### 5. Verify the setup
+
+```bash
+# Health check — should return risk data for London
+curl "http://localhost:5000/api/risk/analyze?location=London"
+
+# Location autocomplete
+curl "http://localhost:5000/api/locations/search?q=Kabul"
+
+# Model info
+curl "http://localhost:5000/api/model-info"
+```
+
+### 6. Type-check the project
 
 ```bash
 npm run check
 ```
 
-## Build and Production
+---
+
+## Environment Variables
+
+No secret API keys are required for core local operation. All external data sources used (GDELT, ReliefWeb, Nominatim, REST Countries) are open and unauthenticated.
+
+| Variable | Default | Description |
+|---|---|---|
+| `PORT` | `5000` | HTTP port for the Node/Express server |
+| `NODE_ENV` | `development` | Set to `production` for production builds |
+
+For production deployments, create a `.env` file in the project root:
+
+```env
+PORT=5000
+NODE_ENV=production
+```
+
+---
+
+## Build & Production
+
+### Build
 
 ```bash
 npm run build
+```
+
+This compiles:
+- TypeScript server code → `dist/index.cjs`
+- React frontend → `dist/public/`
+
+### Start Production Server
+
+```bash
 npm run start
 ```
 
-Production runtime serves static assets from `dist/public` and API from the same server process.
+The production server:
+- Serves the compiled React app as static files from `dist/public/`
+- Runs all API routes from the same process
+- Auto-starts the Python ML server on port 5001
 
-## Configuration
-
-Environment variables:
-- `NODE_ENV`: `development` or `production`
-- `PORT`: HTTP port for Node server (defaults to `5000`)
-
-No additional required secret keys are needed for core local operation in the current setup.
+---
 
 ## Troubleshooting
 
-### Port 5000 already in use
+### Port 5000 is already in use
 
-Windows PowerShell:
-
-```powershell
-$p=(Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue).OwningProcess
-if($p){ Stop-Process -Id $p -Force }
+**macOS / Linux:**
+```bash
+lsof -ti:5000 | xargs kill -9
 ```
 
-Then restart:
+**Windows (PowerShell):**
+```powershell
+$p = (Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue).OwningProcess
+if ($p) { Stop-Process -Id $p -Force }
+```
+
+Then restart with `npm run dev`.
+
+---
+
+### `'NODE_ENV' is not recognized` (Windows)
+
+The project uses `cross-env` to handle this cross-platform. Run:
 
 ```bash
+npm install
 npm run dev
 ```
 
-### `'NODE_ENV' is not recognized`
+---
 
-This repository uses `cross-env` in scripts to support Windows shells. Run `npm install` to ensure dependencies are present.
+### Python ML server not starting
 
-### Python model not starting
+1. Confirm Python is accessible: `python3 --version`
+2. Confirm the model artifact exists: `ls ml/model.pkl`
+3. Confirm Python packages are installed: `python3 -c "import sklearn, pandas, numpy"`
+4. Check terminal output for `[ml]` prefixed error lines
 
-Verify:
-- `python --version` works,
-- `server/model.pkl` exists,
-- required Python packages are installed.
+If the model fails to load, the server **automatically falls back** to the rule-based scoring pipeline — the app will still function, but without ML ensemble predictions.
 
-### Dev overlay blocks screen with extension errors
+---
 
-Vite overlay is disabled in this project configuration to reduce browser-extension injection noise during local development.
+### Slow risk analysis response
 
-## Security Notes
+Live signal fetches (GDELT, ReliefWeb) are timeout-protected but depend on external network conditions. If you are in a restricted network environment, responses may take up to 18 seconds before the timeout fallback kicks in.
 
-- CRZP fetches external open-source data; validate and sanitize downstream use in production workflows.
-- Dependency vulnerabilities can evolve over time. Recommended routine:
+---
+
+### Vite overlay blocking the screen
+
+The Vite error overlay is intentionally disabled in this project to reduce noise from browser extension injections during development.
+
+---
+
+## Security
+
+- All external data is sourced from open, public APIs. Validate and sanitize any downstream usage in production workflows.
+- CRZP does not store user data, session information, or any personally identifiable information.
+- Regularly audit dependencies:
 
 ```bash
 npm audit
 npm audit fix
 ```
 
-- Some advisory fixes may require semver-major dependency upgrades; validate behavior after such updates.
-
-## Roadmap
-
-- Harden API auth/rate limiting for multi-tenant deployment.
-- Add persistent cache/storage backend.
-- Improve model explainability and calibration reporting.
-- Expand CI/CD quality gates (lint, tests, audit policies).
+Some advisory fixes may require major version bumps — validate application behavior after significant upgrades.
 
 ---
 
-If you want, I can also add:
-- request/response JSON examples for each endpoint,
-- a deployment section for Docker + reverse proxy,
-- a contributor guide (`CONTRIBUTING.md`) and changelog template.
+## Roadmap
+
+- [ ] **Auth & multi-tenant support** — Rate limiting, API key management, and user accounts
+- [ ] **Persistent database backend** — Replace in-memory cache with PostgreSQL/Redis for cross-session persistence
+- [ ] **Expanded ML training data** — Improve model coverage for underrepresented regions
+- [ ] **Export & reporting** — PDF/CSV intelligence reports for individual locations
+- [ ] **Webhook alerts** — Push notifications when a watchlisted location's RSI changes significantly
+- [ ] **Mobile app** — React Native companion app for on-the-go risk monitoring
+- [ ] **CI/CD pipeline** — GitHub Actions for lint, type-check, and audit on every push
+- [ ] **Docker support** — Containerized deployment with Docker Compose
+
+---
+
+## About Google AI Seekho
+
+<div align="center">
+
+**CRZP APEX** is a Phase 1 project submitted for **Google AI Seekho 2026** — Google's initiative to make artificial intelligence education and practical application accessible across South Asia and beyond.
+
+</div>
+
+The project demonstrates applied AI in the domain of **geopolitical risk intelligence**, combining:
+
+- **Machine Learning** — A trained VotingClassifier ensemble for risk classification
+- **Natural Language Processing** — TF-IDF–based location matching and sentiment analysis on live news
+- **Real-Time Data Engineering** — Multi-source concurrent data fetching with graceful degradation
+- **Full-Stack Development** — End-to-end TypeScript + Python application with a production-ready architecture
+
+The goal is to show that AI can be used as a tool for **situational awareness and informed decision-making** in complex global environments — making advanced geopolitical intelligence accessible beyond institutional and governmental bodies.
+
+---
+
+## License
+
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.
+
+---
+
+<div align="center">
+
+Built with precision by **[i-anasop](https://github.com/i-anasop)**
+
+*CRZP APEX — Know The Risk.*
+
+</div>
