@@ -384,7 +384,7 @@ Built with precision by **[i-anasop](https://github.com/i-anasop)**
 
 <br />
 
-[![Powered by Google AI Seekho](https://img.shields.io/badge/Powered%20by-Google%20AI%20Seekho-4285F4?style=for-the-badge&logo=google&logoColor=white&labelColor=0f0f0f)](https://seekho.google.com)
+[![Powered by Google AI Seekho](https://img.shields.io/badge/Powered%20by-Google%20AI%20Seekho-4285F4?style=for-the-badge&logo=google&logoColor=white&labelColor=0f0f0f)](https://rsvp.withgoogle.com/events/aiseekho2026)
 
 <br />
 
