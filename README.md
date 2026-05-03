@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/favicon.png" alt="CRZP APEX Logo" width="110" />
+<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/logo.png" alt="CRZP APEX Logo" width="110" />
 
 <br />
 
@@ -20,7 +20,7 @@
 
 ---
 
-> 🏆 **Google AI Seekho 2026 — Phase 1 Project**
+> 🏆 **<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/google-colored.svg" height="18" alt="Google" /> AI Seekho 2026 — Phase 1 Project**
 > Built as part of Google's AI Seekho initiative to democratize access to AI-powered tools for social impact.
 
 ---
@@ -699,11 +699,11 @@ Some advisory fixes may require major version bumps — validate application beh
 
 ---
 
-## About Google AI Seekho
+## About <img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/google-colored.svg" height="22" alt="Google" /> AI Seekho
 
 <div align="center">
 
-**CRZP APEX** is a Phase 1 project submitted for **Google AI Seekho 2026** — Google's initiative to make artificial intelligence education and practical application accessible across South Asia and beyond.
+**CRZP APEX** is a Phase 1 project submitted for **<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/google-colored.svg" height="16" alt="Google" /> AI Seekho 2026** — Google's initiative to make artificial intelligence education and practical application accessible across South Asia and beyond.
 
 </div>
 
@@ -728,7 +728,7 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 
 <br />
 
-<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/favicon.png" alt="CRZP APEX" width="64" />
+<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/logo.png" alt="CRZP APEX" width="64" />
 
 <br /><br />
 
@@ -746,18 +746,22 @@ Built with precision by **[i-anasop](https://github.com/i-anasop)**
 
 <br />
 
-<img src="https://img.shields.io/badge/Google%20AI-Seekho%202026-4285F4?style=for-the-badge&logo=google&logoColor=white&labelColor=0f0f0f" alt="Google AI Seekho 2026" />
-
-<br /><br />
-
-**Phase 1 Project — Google AI Seekho 2026**
-
-*This project was built as part of Google's AI Seekho programme — an initiative to advance AI literacy,*
-*practical application, and real-world problem solving across South Asia and beyond.*
+<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/google-colored.svg" height="36" alt="Google" />
 
 <br />
 
-[![Google AI](https://img.shields.io/badge/Powered%20by-Google%20AI%20Seekho-EA4335?style=flat-square&logo=google&logoColor=white)](https://seekho.google.com)
+### AI Seekho 2026
+
+**Phase 1 Project**
+
+<br />
+
+*This project was built as part of* ***Google's AI Seekho programme*** *— an initiative to advance AI*
+*literacy, practical application, and real-world problem solving across South Asia and beyond.*
+
+<br />
+
+[![Powered by Google AI Seekho](https://img.shields.io/badge/Powered%20by-Google%20AI%20Seekho-4285F4?style=for-the-badge&logo=google&logoColor=white&labelColor=0f0f0f)](https://seekho.google.com)
 
 <br />
 
