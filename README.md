@@ -1,5 +1,9 @@
 <div align="center">
 
+<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/favicon.png" alt="CRZP APEX Logo" width="110" />
+
+<br />
+
 <img src="https://img.shields.io/badge/CRZP-APEX-f59e0b?style=for-the-badge&labelColor=020617&color=f59e0b" alt="CRZP APEX" />
 
 # CRZP APEX
@@ -721,8 +725,39 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 
 <div align="center">
 
+<br />
+
+<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/favicon.png" alt="CRZP APEX" width="64" />
+
+<br /><br />
+
+### CRZP APEX
+
+*Know The Risk. Anywhere. Instantly.*
+
+<br />
+
 Built with precision by **[i-anasop](https://github.com/i-anasop)**
 
-*CRZP APEX — Know The Risk.*
+<br />
+
+---
+
+<br />
+
+<img src="https://img.shields.io/badge/Google%20AI-Seekho%202026-4285F4?style=for-the-badge&logo=google&logoColor=white&labelColor=0f0f0f" alt="Google AI Seekho 2026" />
+
+<br /><br />
+
+**Phase 1 Project — Google AI Seekho 2026**
+
+*This project was built as part of Google's AI Seekho programme — an initiative to advance AI literacy,*
+*practical application, and real-world problem solving across South Asia and beyond.*
+
+<br />
+
+[![Google AI](https://img.shields.io/badge/Powered%20by-Google%20AI%20Seekho-EA4335?style=flat-square&logo=google&logoColor=white)](https://seekho.google.com)
+
+<br />
 
 </div>
