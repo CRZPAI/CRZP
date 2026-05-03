@@ -365,9 +365,10 @@ export default function Home() {
               initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="fixed top-0 inset-x-0 z-[9999] h-[60px] flex items-center justify-between px-6 lg:px-10 border-b border-white/[0.06]"
+              className="fixed top-0 inset-x-0 z-[9999] border-b border-white/[0.06]"
               style={{ background: "rgba(4,7,18,0.75)", backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)" }}
             >
+            <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 h-[60px] flex items-center justify-between">
               {/* Left: brand */}
               <a href="/" className="flex items-center gap-3 group" title="CRZP APEX">
                 <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500 shadow-lg flex-shrink-0 group-hover:bg-amber-400 transition-colors">
@@ -455,6 +456,7 @@ export default function Home() {
                   <span className="hidden sm:inline">Site</span>
                 </a>
               </div>
+            </div>
             </motion.nav>
 
 
@@ -539,20 +541,42 @@ export default function Home() {
                   </div>
 
                   <div className="w-full flex gap-2.5">
+                    {/* Live Monitor button */}
                     <button
                       onClick={() => setIntelDrawer("watchlist")}
-                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 text-black font-bold uppercase text-[11px] tracking-wider hover:bg-amber-400 active:scale-[0.98] transition-all shadow-lg shadow-amber-500/20"
+                      className="flex-1 group relative inline-flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl active:scale-[0.97] transition-all duration-150 overflow-hidden"
+                      style={{
+                        background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                        boxShadow: "0 4px 24px rgba(245,158,11,0.25), inset 0 1px 0 rgba(255,255,255,0.15)",
+                      }}
                     >
-                      <Radio className="w-3.5 h-3.5" />
-                      Live Monitor
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                        style={{ background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)" }} />
+                      <span className="relative flex items-center gap-2">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black/40 opacity-75" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-black/50" />
+                        </span>
+                        <span className="text-black font-black uppercase text-[11px] tracking-[0.12em]">Live Monitor</span>
+                      </span>
                     </button>
 
+                    {/* Leaderboard button */}
                     <button
                       onClick={() => setIntelDrawer("leaderboard")}
-                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-white/[0.08] text-white/60 font-bold uppercase text-[11px] tracking-wider hover:border-white/15 hover:text-white/80 hover:bg-white/[0.04] active:scale-[0.98] transition-all"
+                      className="flex-1 group relative inline-flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl active:scale-[0.97] transition-all duration-150 overflow-hidden"
+                      style={{
+                        background: "rgba(255,255,255,0.04)",
+                        border: "1px solid rgba(255,255,255,0.09)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                      }}
                     >
-                      <LayoutList className="w-3.5 h-3.5" />
-                      Analysis
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                        style={{ background: "rgba(245,158,11,0.06)" }} />
+                      <span className="relative flex items-center gap-2">
+                        <LayoutList className="w-3.5 h-3.5 text-white/40 group-hover:text-amber-400/70 transition-colors duration-150" />
+                        <span className="text-white/55 group-hover:text-white/80 font-black uppercase text-[11px] tracking-[0.12em] transition-colors duration-150">Leaderboard</span>
+                      </span>
                     </button>
                   </div>
                 </div>
