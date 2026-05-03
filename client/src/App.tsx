@@ -14,16 +14,16 @@ function useTitle(title: string) {
   useEffect(() => { document.title = title; }, [title]);
 }
 
-function TitledHome() { useTitle("CRZP | App"); return <Home />; }
+function TitledHome() { useTitle("CRZP APEX — Risk Intelligence Platform"); return <Home />; }
 function TitledLanding() {
-  useTitle("CRZP | Website");
+  useTitle("CRZP APEX — Geopolitical Risk Intelligence");
   return <WebsiteLayout><Landing /></WebsiteLayout>;
 }
 function TitledDocs() {
-  useTitle("CRZP | Docs");
+  useTitle("Documentation — CRZP APEX");
   return <WebsiteLayout><Docs /></WebsiteLayout>;
 }
-function TitledNotFound() { useTitle("CRZP | Not Found"); return <NotFound />; }
+function TitledNotFound() { useTitle("Page Not Found — CRZP APEX"); return <NotFound />; }
 
 function WebsiteLayout({ children }: { children: React.ReactNode }) {
   return (
