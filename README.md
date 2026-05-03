@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/logo.png" alt="CRZP APEX Logo" width="310" />
+<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/logo.png" alt="CRZP APEX Logo" width="110" />
 
 <br />
 
@@ -16,16 +16,17 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-ML%20Engine-F7931E?style=flat-square&logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
+[![Cloud Run](https://img.shields.io/badge/Google_Cloud_Run-Deployed-4285F4?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com/run)
 [![License: MIT](https://img.shields.io/badge/License-MIT-white?style=flat-square)](LICENSE)
 
 ---
 
-> 🏆 **<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/google-colored.svg" height="18" alt="Google" /> AI Seekho 2026 — Phase 1 Project**
+> 🏆 **<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/google-colored.svg" height="18" alt="Google" /> AI Seekho 2026 — Phase 1 Project**
 > Built as part of Google's AI Seekho initiative to democratize access to AI-powered tools for social impact.
 
 ---
 
-[Live Demo](https://crzp.replit.app) · [Documentation](https://crzp.replit.app/docs) · [Report a Bug](https://github.com/i-anasop/CRZP/issues) · [Request a Feature](https://github.com/i-anasop/CRZP/issues)
+[Live Demo](https://crzp-apex-578360710770.us-central1.run.app) · [Documentation](https://crzp-apex-578360710770.us-central1.run.app/docs) · [Report a Bug](https://github.com/CRZP-AI/CRZP/issues) · [Request a Feature](https://github.com/CRZP-AI/CRZP/issues)
 
 </div>
 
@@ -43,6 +44,7 @@
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [Build & Production](#build--production)
+- [Deployment](#deployment)
 - [Troubleshooting](#troubleshooting)
 - [Security](#security)
 - [Roadmap](#roadmap)
@@ -85,7 +87,7 @@ Browser (React + Vite)
         │
         │  GET /api/*  (TanStack Query)
         ▼
-Node.js / Express 5  — PORT 5000
+Node.js / Express 5  — PORT 8080 (Cloud Run) / 5000 (local)
   ├── /api/locations/*   Location autocomplete
   ├── /api/risk/*        Risk analysis + comparison
   ├── /api/model-info    ML metadata
@@ -103,7 +105,7 @@ External Sources: GDELT 2.0 · ReliefWeb · Nominatim · REST Countries
 
 | Service | Host | Port |
 |---|---|---|
-| Node/Express API + Vite | `0.0.0.0` | `5000` |
+| Node/Express API + Vite | `0.0.0.0` | `8080` (prod) / `5000` (dev) |
 | Python ML Server | `127.0.0.1` | `5001` (auto-launched by Node) |
 
 ---
@@ -164,13 +166,14 @@ Every risk request runs through a **5-tier scoring pipeline**:
 
 ## API Reference
 
-Base URL: `http://localhost:5000`
+Base URL (production): `https://crzp-apex-578360710770.us-central1.run.app`
+Base URL (local): `http://localhost:5000`
 
 ### `GET /api/locations/search?q=<query>`
 Returns location suggestions from Nominatim.
 
 ```bash
-curl "http://localhost:5000/api/locations/search?q=Baghdad"
+curl "https://crzp-apex-578360710770.us-central1.run.app/api/locations/search?q=Baghdad"
 ```
 
 ---
@@ -179,7 +182,7 @@ curl "http://localhost:5000/api/locations/search?q=Baghdad"
 Full risk analysis for a single location. Returns `riskScore`, `riskLevel`, `confidence`, `breakdown` (5 axes), `incidents`, `trend`, `countryProfile`, and `mlPrediction`.
 
 ```bash
-curl "http://localhost:5000/api/risk/analyze?location=Kabul"
+curl "https://crzp-apex-578360710770.us-central1.run.app/api/risk/analyze?location=Kabul"
 ```
 
 ```json
@@ -235,6 +238,9 @@ CRZP/
 ├── shared/
 │   ├── schema.ts          # Zod validation schemas
 │   └── routes.ts          # Typed API route constants
+├── Dockerfile             # Multi-stage build for Cloud Run
+├── .dockerignore
+├── deploy-cloudrun.sh     # One-command Cloud Run deploy script
 ├── package.json
 ├── pyproject.toml
 └── vite.config.ts
@@ -248,7 +254,7 @@ CRZP/
 
 ```bash
 # 1. Clone
-git clone https://github.com/i-anasop/CRZP.git
+git clone https://github.com/CRZP-AI/CRZP.git
 cd CRZP
 
 # 2. Install Node dependencies
@@ -282,7 +288,38 @@ No API keys are required for core operation. All data sources are open and unaut
 
 ```bash
 npm run build   # Compiles server → dist/index.cjs, frontend → dist/public/
-npm run start   # Serves production build
+npm run start   # Serves production build on $PORT (default 5000)
+```
+
+---
+
+## Deployment
+
+CRZP APEX is deployed on **Google Cloud Run** for zero-ops, auto-scaling production hosting.
+
+**Live URL:** https://crzp-apex-578360710770.us-central1.run.app
+
+### Deploy your own instance
+
+```bash
+# Set your GCP project
+PROJECT_ID="your-gcp-project-id"
+
+# One-command deploy (builds via Cloud Build, deploys to Cloud Run)
+gcloud run deploy crzp-apex \
+  --source=. \
+  --region=us-central1 \
+  --project=$PROJECT_ID \
+  --allow-unauthenticated \
+  --port=8080 \
+  --memory=2Gi \
+  --cpu=2 \
+  --set-env-vars="NODE_ENV=production"
+```
+
+Or use the included script:
+```bash
+bash deploy-cloudrun.sh your-gcp-project-id
 ```
 
 ---
@@ -326,16 +363,16 @@ GDELT/ReliefWeb fetches are timeout-protected but depend on external network con
 - [ ] PDF/CSV export for intelligence reports
 - [ ] Webhook alerts when a watchlisted location's RSI changes significantly
 - [ ] Expanded ML training coverage for underrepresented regions
-- [ ] CI/CD pipeline with GitHub Actions
-- [ ] Docker support
+- [x] CI/CD with GitHub Actions
+- [x] Docker + Cloud Run deployment
 
 ---
 
-## About <img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/google-colored.svg" height="22" alt="Google" /> AI Seekho
+## About <img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/google-colored.svg" height="22" alt="Google" /> AI Seekho
 
 <div align="center">
 
-**CRZP APEX** is a Phase 1 project submitted for **<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/google-colored.svg" height="16" alt="Google" /> AI Seekho 2026** — Google's initiative to make artificial intelligence education and practical application accessible across South Asia and beyond.
+**CRZP APEX** is a Phase 1 project submitted for **<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/google-colored.svg" height="16" alt="Google" /> AI Seekho 2026** — Google's initiative to make artificial intelligence education and practical application accessible across South Asia and beyond.
 
 </div>
 
@@ -353,7 +390,7 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 
 <br />
 
-<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/logo.png" alt="CRZP APEX" width="64" />
+<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/logo.png" alt="CRZP APEX" width="64" />
 
 <br /><br />
 
@@ -363,7 +400,7 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 
 <br />
 
-Built with precision by **[i-anasop](https://github.com/i-anasop)**
+Built with precision by **[CRZP-AI](https://github.com/CRZP-AI)**
 
 <br />
 
@@ -371,7 +408,7 @@ Built with precision by **[i-anasop](https://github.com/i-anasop)**
 
 <br />
 
-<img src="https://raw.githubusercontent.com/i-anasop/CRZP/main/client/public/google-colored.svg" height="36" alt="Google" />
+<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/google-colored.svg" height="36" alt="Google" />
 
 ### AI Seekho 2026
 
@@ -384,7 +421,7 @@ Built with precision by **[i-anasop](https://github.com/i-anasop)**
 
 <br />
 
-[![Powered by Google AI Seekho](https://img.shields.io/badge/Powered%20by-Google%20AI%20Seekho-4285F4?style=for-the-badge&logo=google&logoColor=white&labelColor=0f0f0f)](https://rsvp.withgoogle.com/events/aiseekho2026)
+[![Powered by Google AI Seekho](https://img.shields.io/badge/Powered%20by-Google%20AI%20Seekho-4285F4?style=for-the-badge&logo=google&logoColor=white&labelColor=0f0f0f)](https://seekho.google.com)
 
 <br />
 
