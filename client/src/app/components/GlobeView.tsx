@@ -1067,14 +1067,15 @@ export function GlobeView({
       canvas.height = canvasHeight * dpr;
       canvas.style.width = `${canvasWidth}px`;
       canvas.style.height = `${canvasHeight}px`;
-      // When a location is selected, bias the canvas left so the globe sits
-      // to the left and doesn't cover right-side detail panels. Use a stronger bias in detail mode.
-      if (lat || lon) {
-        canvas.style.left = `${-(canvasWidth - r.width) * 0.75}px`;
-      } else {
-        canvas.style.left = `${-(canvasWidth - r.width) / 2}px`;
-      }
-      canvas.style.top = `${-(canvasHeight - r.height) / 2}px`;
+      // Use transform instead of left/top so the canvas never causes layout overflow
+      // (transform is purely visual and is not clipped by ancestor overflow rules)
+      canvas.style.left = "0";
+      canvas.style.top = "0";
+      const offsetX = (lat || lon)
+        ? -(canvasWidth - r.width) * 0.75
+        : -(canvasWidth - r.width) / 2;
+      const offsetY = -(canvasHeight - r.height) / 2;
+      canvas.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
       
       const ctx = canvas.getContext("2d");
       ctx?.scale(dpr, dpr);
@@ -1146,22 +1147,22 @@ export function GlobeView({
         )}
         <div className="flex flex-col gap-1.5">
           <button type="button" onClick={() => setIsLayerMenuOpen(!isLayerMenuOpen)}
-            className="w-9 h-9 rounded-lg border border-white/[0.09] text-white/60 inline-flex items-center justify-center hover:border-amber-500/30 hover:text-amber-400 hover:bg-amber-500/[0.07] transition-all cursor-pointer"
-            style={{ background: "rgba(4,7,18,0.85)", backdropFilter: "blur(12px)", pointerEvents: "auto" }}
+            className="w-10 h-10 rounded-lg border border-white/[0.12] text-white/75 inline-flex items-center justify-center hover:border-amber-500/50 hover:text-amber-400 hover:bg-amber-500/[0.10] transition-all cursor-pointer"
+            style={{ background: "rgba(4,7,18,0.88)", backdropFilter: "blur(12px)", pointerEvents: "auto" }}
             title="Toggle layer menu" aria-label="Toggle layer menu">
-            <Layers3 className="w-3.5 h-3.5" />
+            <Layers3 className="w-5 h-5" />
           </button>
           <button type="button" onClick={() => zoomBy(0.18)}
-            className="w-9 h-9 rounded-lg border border-white/[0.09] text-white/60 inline-flex items-center justify-center hover:border-white/20 hover:text-white/90 hover:bg-white/[0.05] transition-all cursor-pointer"
-            style={{ background: "rgba(4,7,18,0.85)", backdropFilter: "blur(12px)", pointerEvents: "auto" }}
+            className="w-10 h-10 rounded-lg border border-white/[0.12] text-white/75 inline-flex items-center justify-center hover:border-white/30 hover:text-white hover:bg-white/[0.07] transition-all cursor-pointer"
+            style={{ background: "rgba(4,7,18,0.88)", backdropFilter: "blur(12px)", pointerEvents: "auto" }}
             title="Zoom in" aria-label="Zoom in">
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-5 h-5" />
           </button>
           <button type="button" onClick={() => zoomBy(-0.18)}
-            className="w-9 h-9 rounded-lg border border-white/[0.09] text-white/60 inline-flex items-center justify-center hover:border-white/20 hover:text-white/90 hover:bg-white/[0.05] transition-all cursor-pointer"
-            style={{ background: "rgba(4,7,18,0.85)", backdropFilter: "blur(12px)", pointerEvents: "auto" }}
+            className="w-10 h-10 rounded-lg border border-white/[0.12] text-white/75 inline-flex items-center justify-center hover:border-white/30 hover:text-white hover:bg-white/[0.07] transition-all cursor-pointer"
+            style={{ background: "rgba(4,7,18,0.88)", backdropFilter: "blur(12px)", pointerEvents: "auto" }}
             title="Zoom out" aria-label="Zoom out">
-            <Minus className="w-3.5 h-3.5" />
+            <Minus className="w-5 h-5" />
           </button>
         </div>
       </div>
