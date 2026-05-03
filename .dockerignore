@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.gitignore
+*.md
+logs
+.env
+.env.*
+*.log
+__pycache__
+*.pyc
+*.pyo
+ml/train_model.py
