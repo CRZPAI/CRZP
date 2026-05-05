@@ -18,18 +18,46 @@ import FeedbackButton from "@/app/components/FeedbackButton";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Activity, MapPin, ShieldAlert, ShieldCheck, Zap, Clock, RefreshCw,
-  BarChart3, Newspaper, Globe, Github, GitCompare, TrendingUp, TrendingDown, Minus,
-  Database, ChevronDown, CheckCircle2, Flame, AlertTriangle, Info, History,
-  X as XIcon, Crosshair, BookOpen, ExternalLink, Brain, Cpu, Radio, LayoutList,
+  Activity,
+  MapPin,
+  ShieldAlert,
+  ShieldCheck,
+  Zap,
+  Clock,
+  RefreshCw,
+  BarChart3,
+  Newspaper,
+  Globe,
+  Github,
+  GitCompare,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  Database,
+  ChevronDown,
+  CheckCircle2,
+  Flame,
+  AlertTriangle,
+  Info,
+  History,
+  X as XIcon,
+  Crosshair,
+  BookOpen,
+  ExternalLink,
+  Brain,
+  Cpu,
+  Radio,
+  LayoutList,
 } from "lucide-react";
 import { getRiskColor } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
-/* ── types ────────────────────────────────────────────────────────────*/
-interface HistoryEntry extends SelectedLocation { score?: number }
+/* ── types ─────────────────────────────────────────────────────────────�[...]
+interface HistoryEntry extends SelectedLocation {
+  score?: number;
+}
 
-/* ── constants ──────────────────────────────────────────────────────────*/
+/* ── constants ────────────────────────────────────────────────────────────[...]
 const REFRESH_OPTIONS = [
   { label: "Off", value: 0 },
   { label: "1 min", value: 60_000 },
@@ -37,7 +65,7 @@ const REFRESH_OPTIONS = [
   { label: "5 min", value: 300_000 },
 ];
 
-/* ── tiny helpers ─────────────────────────────────────────────────────────*/
+/* ── tiny helpers ───────────────────────────────────────────────────────────[...]
 function useTypewriter(text: string, speed = 16) {
   const [out, setOut] = useState("");
   useEffect(() => {
@@ -138,7 +166,7 @@ function ConfidenceMeter({ pct }: { pct: number }) {
   );
 }
 
-/* ══════════════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════════[...]
 export default function Home() {
   const [loc, setLoc] = useState<SelectedLocation | null>(null);
   const [tab, setTab] = useState("overview");
@@ -429,6 +457,16 @@ export default function Home() {
             large screens. Visit on a laptop or desktop to access the full
             interactive globe, live analytics, and threat briefings.
           </p>
+
+          {/* URL hint */}
+          <div
+            className="mt-6 px-3 py-2 rounded-lg border border-white/[0.06] w-full"
+            style={{ background: "rgba(255,255,255,0.02)" }}
+          >
+            <p className="text-[10px] font-mono text-white/25 tracking-wide">
+              crzp.replit.app
+            </p>
+          </div>
 
           {/* Bottom badge */}
           <div className="flex items-center gap-1.5 mt-8">
