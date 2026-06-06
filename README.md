@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/logo.png" alt="CRZP APEX Logo" width="210" />
+<img src="https://raw.githubusercontent.com/CRZPAI/CRZP/main/client/public/logo.png" alt="CRZP APEX Logo" width="210" />
 
 <br />
 
@@ -21,12 +21,12 @@
 
 ---
 
-> 🏆 **<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/google-colored.svg" height="18" alt="Google" /> AI Seekho 2026 — Phase 1 Project**
+> 🏆 **<img src="https://raw.githubusercontent.com/CRZPAI/CRZP/main/client/public/google-colored.svg" height="18" alt="Google" /> AI Seekho 2026 — Phase 1 Project**
 > Built as part of Google's AI Seekho initiative to democratize access to AI-powered tools for social impact.
 
 ---
 
-[Live Demo](https://crzp-apex-578360710770.us-central1.run.app) · [Documentation](https://crzp-apex-578360710770.us-central1.run.app/docs) · [Report a Bug](https://github.com/CRZP-AI/CRZP/issues) · [X](https://x.com/crzp_ai) · [Request a Feature](https://github.com/CRZP-AI/CRZP/issues)
+[Live Demo](https://crzp-apex-578360710770.us-central1.run.app) · [Documentation](https://crzp-apex-578360710770.us-central1.run.app/docs) · [Report a Bug](https://github.com/CRZPAI/CRZP/issues) · [X](https://x.com/crzp_ai) · [Request a Feature](https://github.com/CRZPAI/CRZP/issues)
 
 </div>
 
@@ -254,7 +254,7 @@ CRZP/
 
 ```bash
 # 1. Clone
-git clone https://github.com/CRZP-AI/CRZP.git
+git clone https://github.com/CRZPAI/CRZP.git
 cd CRZP
 
 # 2. Install Node dependencies
@@ -368,11 +368,11 @@ GDELT/ReliefWeb fetches are timeout-protected but depend on external network con
 
 ---
 
-## About <img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/google-colored.svg" height="22" alt="Google" /> AI Seekho
+## About <img src="https://raw.githubusercontent.com/CRZPAI/CRZP/main/client/public/google-colored.svg" height="22" alt="Google" /> AI Seekho
 
 <div align="center">
 
-**CRZP APEX** is a Phase 1 project submitted for **<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/google-colored.svg" height="16" alt="Google" /> AI Seekho 2026** — Google's initiative to make artificial intelligence education and practical application accessible across South Asia and beyond.
+**CRZP APEX** is a Phase 1 project submitted for **<img src="https://raw.githubusercontent.com/CRZPAI/CRZP/main/client/public/google-colored.svg" height="16" alt="Google" /> AI Seekho 2026** — Google's initiative to make artificial intelligence education and practical application accessible across South Asia and beyond.
 
 </div>
 
@@ -390,7 +390,7 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 
 <br />
 
-<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/logo.png" alt="CRZP APEX" width="64" />
+<img src="https://raw.githubusercontent.com/CRZPAI/CRZP/main/client/public/logo.png" alt="CRZP APEX" width="64" />
 
 <br /><br />
 
@@ -408,7 +408,7 @@ Built with precision by **[Anas](https://github.com/i-anasop)**
 
 <br />
 
-<img src="https://raw.githubusercontent.com/CRZP-AI/CRZP/main/client/public/google-colored.svg" height="36" alt="Google" />
+<img src="https://raw.githubusercontent.com/CRZPAI/CRZP/main/client/public/google-colored.svg" height="36" alt="Google" />
 
 ### AI Seekho 2026
 
