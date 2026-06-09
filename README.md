@@ -21,7 +21,7 @@
 
 ---
 
-> 🏆 **<img src="https://raw.githubusercontent.com/CRZPAI/CRZP/main/client/public/google-colored.svg" height="18" alt="Google" /> AI Seekho 2026 — Phase 1 Project**
+> 🏆 **<img src="https://raw.githubusercontent.com/CRZPAI/CRZP/main/client/public/google-colored.svg" height="18" alt="Google" /> AI Seekho 2026 — Phase 1 Winner**
 > Built as part of Google's AI Seekho initiative to democratize access to AI-powered tools for social impact.
 
 ---
@@ -412,7 +412,7 @@ Built with precision by **[Anas](https://github.com/i-anasop)**
 
 ### AI Seekho 2026
 
-**Phase 1 Project**
+**Phase 1 Winner**
 
 <br />
 
