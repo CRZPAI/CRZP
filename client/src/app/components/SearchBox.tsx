@@ -28,6 +28,7 @@ export function SearchBox({ onSelect, className, autoFocus = false, externalFocu
   const [query, setQuery]       = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [listening, setListening] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(-1);
   const inputRef    = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const recogRef    = useRef<any>(null);
@@ -35,6 +36,9 @@ export function SearchBox({ onSelect, className, autoFocus = false, externalFocu
 
   const { data: suggestions, isLoading } = useLocationsSearch(debouncedQ);
   const showDropdown = isFocused && query.length >= 2;
+
+  // Reset keyboard highlight whenever the suggestion list changes
+  useEffect(() => { setActiveIdx(-1); }, [suggestions]);
 
   // External focus trigger (Cmd+K / "/")
   useEffect(() => {
@@ -106,12 +110,28 @@ export function SearchBox({ onSelect, className, autoFocus = false, externalFocu
           autoFocus={autoFocus}
           type="text"
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={e => { setQuery(e.target.value); setIsFocused(true); }}
           onFocus={() => setIsFocused(true)}
           onKeyDown={e => {
-            if (e.key === "Enter" && suggestions?.length) handleSelect(suggestions[0]);
-            if (e.key === "Escape") { setIsFocused(false); inputRef.current?.blur(); }
+            const count = suggestions?.length ?? 0;
+            if (e.key === "ArrowDown" && count) {
+              e.preventDefault();
+              setIsFocused(true);
+              setActiveIdx(i => (i + 1) % count);
+            } else if (e.key === "ArrowUp" && count) {
+              e.preventDefault();
+              setActiveIdx(i => (i <= 0 ? count - 1 : i - 1));
+            } else if (e.key === "Enter" && count) {
+              handleSelect(suggestions![activeIdx >= 0 ? activeIdx : 0]);
+            } else if (e.key === "Escape") {
+              setIsFocused(false);
+              inputRef.current?.blur();
+            }
           }}
+          role="combobox"
+          aria-expanded={showDropdown}
+          aria-autocomplete="list"
+          aria-label="Search location"
           placeholder="Search city, region, or country…"
           className="flex-1 bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground/50 py-3 pr-2"
           data-testid="input-search"
@@ -119,7 +139,7 @@ export function SearchBox({ onSelect, className, autoFocus = false, externalFocu
 
         <div className="flex items-center gap-1 pr-3">
           {query && (
-            <button onClick={handleClear} className="text-muted-foreground/60 hover:text-foreground p-1 rounded transition-colors">
+            <button onClick={handleClear} aria-label="Clear search" className="text-muted-foreground/60 hover:text-foreground p-1 rounded transition-colors">
               <X className="w-3.5 h-3.5" />
             </button>
           )}
@@ -158,7 +178,11 @@ export function SearchBox({ onSelect, className, autoFocus = false, externalFocu
                 {suggestions.map((s, i) => (
                   <li key={s.place_id || i}>
                     <button
-                      className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-muted transition-colors"
+                      className={cn(
+                        "w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-muted transition-colors",
+                        i === activeIdx && "bg-muted",
+                      )}
+                      onMouseEnter={() => setActiveIdx(i)}
                       onClick={() => handleSelect(s)}
                       data-testid={`suggestion-${i}`}
                     >
@@ -168,11 +192,16 @@ export function SearchBox({ onSelect, className, autoFocus = false, externalFocu
                   </li>
                 ))}
               </ul>
-            ) : !isLoading ? (
+            ) : isLoading || debouncedQ !== query ? (
+              <div className="px-4 py-4 flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-primary" />
+                Searching…
+              </div>
+            ) : (
               <div className="px-4 py-6 text-center text-sm text-muted-foreground">
                 No locations found for "{query}"
               </div>
-            ) : null}
+            )}
           </motion.div>
         )}
       </AnimatePresence>

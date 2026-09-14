@@ -343,7 +343,7 @@ export default function Landing() {
             className="relative z-10 border-t border-white/[0.05] bg-white/[0.015] backdrop-blur-sm"
           >
             <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24">
-              <div className="flex items-stretch divide-x divide-white/[0.05]">
+              <div className="grid grid-cols-3 sm:flex items-stretch sm:divide-x divide-white/[0.05]">
                 {[
                   { val: "100+",   label: "Countries Covered",   color: "text-white" },
                   { val: "15 min", label: "Data Refresh Cycle",  color: "text-amber-400" },
@@ -351,7 +351,7 @@ export default function Landing() {
                   { val: "24",     label: "Active Crisis Zones",  color: "text-red-400" },
                   { val: "4",      label: "Risk Dimensions",      color: "text-blue-400" },
                 ].map((s) => (
-                  <div key={s.label} className="flex-1 flex flex-col items-center justify-center py-4 px-3 gap-1 group">
+                  <div key={s.label} className="flex-1 flex flex-col items-center justify-center py-3 sm:py-4 px-2 sm:px-3 gap-1 group">
                     <span className={cn("text-[20px] font-black tabular-nums leading-none tracking-tight", s.color)}>{s.val}</span>
                     <span className="text-[8px] font-bold text-white/20 uppercase tracking-[0.18em] text-center leading-tight group-hover:text-white/35 transition-colors">{s.label}</span>
                   </div>
@@ -584,7 +584,10 @@ export default function Landing() {
         </section>
       </div>
 
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+      <div
+        className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] mix-blend-overlay"
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }}
+      />
     </div>
   );
 }

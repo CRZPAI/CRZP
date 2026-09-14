@@ -104,8 +104,8 @@ function RiskIcon({ score }: { score: number }) {
 
 function ConfidenceMeter({ pct }: { pct: number }) {
   return (
-    <div className="flex flex-col gap-1">
-      <div className="flex justify-between text-xs text-muted-foreground">
+    <div className="flex flex-col gap-1 w-full max-w-[200px]">
+      <div className="flex justify-between gap-3 text-xs text-muted-foreground">
         <span>Model confidence</span>
         <span className="font-semibold text-foreground">{pct}%</span>
       </div>
@@ -291,11 +291,10 @@ export default function Home() {
             CRZP APEX is a precision geopolitical intelligence platform built for large screens. Visit on a laptop or desktop to access the full interactive globe, live analytics, and threat briefings.
           </p>
 
-          {/* URL hint */}
-          <div className="mt-6 px-3 py-2 rounded-lg border border-white/[0.06] w-full"
-            style={{ background: "rgba(255,255,255,0.02)" }}>
-            <p className="text-[10px] font-mono text-white/25 tracking-wide">CRZP</p>
-          </div>
+          <a href="/landing"
+            className="mt-6 px-4 py-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-400 text-[11px] font-black uppercase tracking-[0.15em] w-full">
+            Learn more about CRZP
+          </a>
 
           {/* Bottom badge */}
           <div className="flex items-center gap-1.5 mt-8">
@@ -490,7 +489,7 @@ export default function Home() {
                   <span className="block text-[48px] sm:text-6xl lg:text-[76px] text-amber-400" style={{ textShadow: "0 4px 32px rgba(245,158,11,0.22)" }}>GENESIS</span>
                 </h1>
 
-                <p className="text-[13px] text-white/35 mb-7 leading-[1.7] max-w-sm pl-4 border-l border-amber-500/25">
+                <p className="text-[13px] text-white/60 mb-7 leading-[1.7] max-w-sm pl-4 border-l border-amber-500/25" style={{ textShadow: "0 1px 10px rgba(2,6,23,0.95), 0 0 2px rgba(2,6,23,0.9)" }}>
                   Precision geopolitical intelligence and predictive volatility modeling. Decipher global instability with high-resolution tactical data.
                 </p>
 
@@ -1006,7 +1005,7 @@ export default function Home() {
                                     : data.escalationMomentum.signal === "De-escalating"
                                     ? <TrendingDown className="w-3 h-3" />
                                     : <Minus className="w-3 h-3" />}
-                                  {data.escalationMomentum.label}
+                                  {data.escalationMomentum.label.replace(/^[↑↓→]\s*/, "")}
                                 </div>
                               )}
                             </div>

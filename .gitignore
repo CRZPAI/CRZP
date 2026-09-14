@@ -6,3 +6,5 @@ ml/__pycache__/
 *.pyc
 *.pyo
 logs/
+.vercel
+.env*

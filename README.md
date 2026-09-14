@@ -16,7 +16,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-ML%20Engine-F7931E?style=flat-square&logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
-[![Cloud Run](https://img.shields.io/badge/Google_Cloud_Run-Deployed-4285F4?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com/run)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://crzp.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-white?style=flat-square)](LICENSE)
 
 ---
@@ -26,7 +26,7 @@
 
 ---
 
-[Live Demo](https://crzp-apex-578360710770.us-central1.run.app) · [Documentation](https://crzp-apex-578360710770.us-central1.run.app/docs) · [Report a Bug](https://github.com/CRZPAI/CRZP/issues) · [X](https://x.com/crzp_ai) · [Request a Feature](https://github.com/CRZPAI/CRZP/issues)
+[Live Demo](https://crzp.vercel.app) · [Documentation](https://crzp.vercel.app/docs) · [Report a Bug](https://github.com/CRZPAI/CRZP/issues) · [X](https://x.com/crzp_ai) · [Request a Feature](https://github.com/CRZPAI/CRZP/issues)
 
 </div>
 
@@ -87,15 +87,16 @@ Browser (React + Vite)
         │
         │  GET /api/*  (TanStack Query)
         ▼
-Node.js / Express 5  — PORT 8080 (Cloud Run) / 5000 (local)
-  ├── /api/locations/*   Location autocomplete
-  ├── /api/risk/*        Risk analysis + comparison
-  ├── /api/model-info    ML metadata
-  └── In-memory cache (5-min TTL)
+API layer
+  ├── Production: Vercel Python function — api/index.py
+  └── Local dev:  Node.js / Express 5 (port 5000) → Python ML server (port 5001)
+      ├── /api/locations/*   Location autocomplete
+      ├── /api/risk/*        Risk analysis + comparison
+      ├── /api/model-info    ML metadata
+      └── In-memory cache (5-min TTL)
         │
-        │  HTTP  127.0.0.1:5001  (auto-launched)
         ▼
-Python ML Server  — ml/ml_model.py
+ML Engine  — ml/ml_model.py
   └── VotingClassifier + rule-based tiers + TF-IDF
         │
         │  Concurrent outbound fetches
@@ -105,8 +106,9 @@ External Sources: GDELT 2.0 · ReliefWeb · Nominatim · REST Countries
 
 | Service | Host | Port |
 |---|---|---|
-| Node/Express API + Vite | `0.0.0.0` | `8080` (prod) / `5000` (dev) |
-| Python ML Server | `127.0.0.1` | `5001` (auto-launched by Node) |
+| Static frontend + `api/index.py` | Vercel | — (production) |
+| Node/Express API + Vite | `0.0.0.0` | `5000` (local dev) |
+| Python ML Server | `127.0.0.1` | `5001` (auto-launched by Node, local dev) |
 
 ---
 
@@ -133,6 +135,7 @@ External Sources: GDELT 2.0 · ReliefWeb · Nominatim · REST Countries
 | Node.js | 20+ | Runtime |
 | Express | 5.x | HTTP server and API routing |
 | TypeScript + `tsx` | 5.6 | Type-safe server, zero compile step in dev |
+| Vercel Functions (Python) | 3.12 | Serverless production API (`api/index.py`) |
 
 ### Machine Learning & Data
 
@@ -166,14 +169,14 @@ Every risk request runs through a **5-tier scoring pipeline**:
 
 ## API Reference
 
-Base URL (production): `https://crzp-apex-578360710770.us-central1.run.app`
+Base URL (production): `https://crzp.vercel.app`
 Base URL (local): `http://localhost:5000`
 
 ### `GET /api/locations/search?q=<query>`
 Returns location suggestions from Nominatim.
 
 ```bash
-curl "https://crzp-apex-578360710770.us-central1.run.app/api/locations/search?q=Baghdad"
+curl "https://crzp.vercel.app/api/locations/search?q=Baghdad"
 ```
 
 ---
@@ -182,7 +185,7 @@ curl "https://crzp-apex-578360710770.us-central1.run.app/api/locations/search?q=
 Full risk analysis for a single location. Returns `riskScore`, `riskLevel`, `confidence`, `breakdown` (5 axes), `incidents`, `trend`, `countryProfile`, and `mlPrediction`.
 
 ```bash
-curl "https://crzp-apex-578360710770.us-central1.run.app/api/risk/analyze?location=Kabul"
+curl "https://crzp.vercel.app/api/risk/analyze?location=Kabul"
 ```
 
 ```json
@@ -227,20 +230,23 @@ CRZP/
 │   │   └── pages/         # Landing.tsx, Docs.tsx
 │   ├── components/ui/     # Radix UI / shadcn component library
 │   └── hooks/             # use-risk.ts, use-locations.ts, use-debounce.ts
+├── api/
+│   └── index.py           # Vercel serverless API (all /api/* routes in production)
 ├── server/
-│   ├── index.ts           # Express bootstrap
+│   ├── index.ts           # Express bootstrap (local dev)
 │   └── routes.ts          # All API routes + Python bridge + cache
 ├── ml/
-│   ├── ml_model.py        # ML inference HTTP server
+│   ├── ml_model.py        # ML inference engine (compute_risk + local HTTP server)
 │   ├── train_model.py     # Training script
 │   ├── model.pkl          # Trained model artifact
 │   └── model_metadata.json
 ├── shared/
 │   ├── schema.ts          # Zod validation schemas
 │   └── routes.ts          # Typed API route constants
-├── Dockerfile             # Multi-stage build for Cloud Run
-├── .dockerignore
-├── deploy-cloudrun.sh     # One-command Cloud Run deploy script
+├── vercel.json            # Vercel build, function and rewrite config
+├── requirements.txt       # Python deps for the Vercel function
+├── Dockerfile             # Optional: container build (Cloud Run / any Docker host)
+├── deploy-cloudrun.sh     # Optional: Cloud Run deploy script
 ├── package.json
 ├── pyproject.toml
 └── vite.config.ts
@@ -261,7 +267,7 @@ cd CRZP
 npm install
 
 # 3. Install Python dependencies
-pip install numpy pandas scikit-learn requests
+pip install -r requirements.txt
 # or: uv sync  (if you have uv)
 
 # 4. Run
@@ -278,9 +284,12 @@ No API keys are required for core operation. All data sources are open and unaut
 
 | Variable | Default | Description |
 |---|---|---|
-| `PORT` | `5000` | HTTP port for the Express server |
+| `PORT` | `5000` | HTTP port for the Express server (local) |
 | `NODE_ENV` | `development` | Set to `production` for production builds |
 | `RESEND_API_KEY` | *(optional)* | If set, feedback submissions are sent via Resend email |
+| `CACHE_ADMIN_TOKEN` | *(optional)* | Required `x-admin-token` header for `DELETE /api/risk/cache` |
+
+On Vercel, set these in **Project → Settings → Environment Variables** (or `vercel env add RESEND_API_KEY production`).
 
 ---
 
@@ -295,29 +304,26 @@ npm run start   # Serves production build on $PORT (default 5000)
 
 ## Deployment
 
-CRZP APEX is deployed on **Google Cloud Run** for zero-ops, auto-scaling production hosting.
+CRZP APEX is deployed on **Vercel** — static frontend on the edge network, API + ML engine as a Python serverless function.
 
-**Live URL:** https://crzp-apex-578360710770.us-central1.run.app
+**Live URL:** https://crzp.vercel.app
+
+Every push to `main` deploys automatically (GitHub integration).
 
 ### Deploy your own instance
 
 ```bash
-# Set your GCP project
-PROJECT_ID="your-gcp-project-id"
-
-# One-command deploy (builds via Cloud Build, deploys to Cloud Run)
-gcloud run deploy crzp-apex \
-  --source=. \
-  --region=us-central1 \
-  --project=$PROJECT_ID \
-  --allow-unauthenticated \
-  --port=8080 \
-  --memory=2Gi \
-  --cpu=2 \
-  --set-env-vars="NODE_ENV=production"
+npm i -g vercel
+vercel link          # create / link a project
+vercel deploy --prod
 ```
 
-Or use the included script:
+`vercel.json` handles everything: `vite build` → `dist/public`, `api/index.py` for all `/api/*` routes (60s max duration), and SPA fallback to `index.html`.
+
+### Alternative: Docker / Cloud Run
+
+A multi-stage `Dockerfile` and `deploy-cloudrun.sh` are still included for container hosting:
+
 ```bash
 bash deploy-cloudrun.sh your-gcp-project-id
 ```
@@ -339,7 +345,7 @@ if ($p) { Stop-Process -Id $p -Force }
 **Python ML server not starting**
 - Run `python3 --version` — must be 3.11+
 - Run `ls ml/model.pkl` — artifact must exist
-- Run `python3 -c "import sklearn, pandas, numpy"` — packages must be installed
+- Run `python3 -c "import sklearn, numpy, requests"` — packages must be installed
 - If the model fails to load, the app falls back to rule-based scoring automatically
 
 **Slow responses**
@@ -350,7 +356,7 @@ GDELT/ReliefWeb fetches are timeout-protected but depend on external network con
 ## Security
 
 - All external data is sourced from open public APIs. Validate and sanitize downstream usage in production workflows.
-- **Feedback data**: `/api/feedback` accepts `name`, `email`, `message`, and `rating`. When `RESEND_API_KEY` is set, this is transmitted to Resend. Otherwise it is appended to `logs/feedbacks.log` on disk. Review your data handling obligations before exposing this endpoint publicly.
+- **Feedback data**: `/api/feedback` accepts `name`, `email`, `message`, and `rating`. When `RESEND_API_KEY` is set, this is transmitted to Resend. Otherwise it is appended to `logs/feedbacks.log` on disk (local) or written to the function logs (Vercel). Review your data handling obligations before exposing this endpoint publicly.
 - Outside of feedback, CRZP does not persist user interaction data or session state.
 - Run `npm audit` regularly to catch dependency vulnerabilities.
 
@@ -365,6 +371,7 @@ GDELT/ReliefWeb fetches are timeout-protected but depend on external network con
 - [ ] Expanded ML training coverage for underrepresented regions
 - [x] CI/CD with GitHub Actions
 - [x] Docker + Cloud Run deployment
+- [x] Vercel serverless deployment
 
 ---
 

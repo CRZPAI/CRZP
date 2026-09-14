@@ -1210,7 +1210,7 @@ def derive_factors(bd: dict, articles: list, incidents: list) -> list:
 # ENTRY POINT
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def predict_risk(location: str) -> None:
+def compute_risk(location: str) -> dict:
     """
     Main pipeline. 'location' may be 'City, Country' from the autocomplete.
     We always extract the clean city name first so lookups and API calls work correctly.
@@ -1347,7 +1347,7 @@ def predict_risk(location: str) -> None:
     # Direct ML prediction for output annotation (even if Tier 1 was used)
     direct_ml = ml_pred or predict_country_risk_ml(country) or predict_country_risk_ml(city_key)
 
-    print(json.dumps({
+    return {
         "location":      full_loc,
         "riskScore":     score,
         "riskLevel":     level,
@@ -1387,7 +1387,12 @@ def predict_risk(location: str) -> None:
             "reliefBoost":     sigs["relief_boost"],
             "totalBoost":      sigs["total"],
         },
-    }))
+    }
+
+
+def predict_risk(location: str) -> None:
+    """CLI / server entry point — prints the result as JSON."""
+    print(json.dumps(compute_risk(location)))
 
 
 def _build_result(location: str) -> str:

@@ -1,0 +1,12 @@
+.git
+node_modules
+dist
+logs
+.env
+.env.*
+pyproject.toml
+uv.lock
+Dockerfile
+.dockerignore
+deploy-cloudrun.sh
+ml/__pycache__

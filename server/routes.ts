@@ -54,6 +54,9 @@ async function runMLModel(location: string): Promise<any> {
   return result;
 }
 
+const PRIMARY_PLACE_TYPES = ["city", "town", "village", "country"];
+const CITY_SUFFIX_RE = /\s+(Division|District|Metropolitan Municipality|Municipality)$/;
+
 /* ── In-memory result cache (5-min TTL) ─────────────────────────────── */
 interface CacheEntry { data: any; ts: number }
 const RESULT_CACHE = new Map<string, CacheEntry>();
@@ -100,19 +103,29 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
             imp > 0.25
           );
         })
-        .sort((a, b) => parseFloat(b.importance) - parseFloat(a.importance))
-        .slice(0, 6)
+        // Real cities/countries first, then admin areas ("Karachi" before "Karachi Division")
+        .sort((a, b) => {
+          const pa = PRIMARY_PLACE_TYPES.includes(a.type || a.class || "") ? 0 : 1;
+          const pb = PRIMARY_PLACE_TYPES.includes(b.type || b.class || "") ? 0 : 1;
+          return pa - pb || parseFloat(b.importance) - parseFloat(a.importance);
+        })
         .map((item) => {
           const addr    = item.address || {};
-          const city    = addr.city || addr.town || addr.village || addr.county || item.display_name.split(",")[0];
+          let city: string = addr.city || addr.town || addr.village || addr.county || item.display_name.split(",")[0];
+          if (["city", "town"].includes(item.addresstype)) {
+            // OSM sometimes names a city by its admin boundary ("Karachi Division")
+            city = city.replace(CITY_SUFFIX_RE, "") || city;
+          }
           const country = addr.country || "";
           return {
             place_id:     item.place_id.toString(),
-            display_name: country ? `${city.trim()}, ${country}` : city.trim(),
+            display_name: country && country !== city.trim() ? `${city.trim()}, ${country}` : city.trim(),
             lat: item.lat,
             lon: item.lon,
           };
-        });
+        })
+        .filter((s, i, all) => all.findIndex((o) => o.display_name === s.display_name) === i)
+        .slice(0, 6);
 
       res.json(suggestions);
     } catch (err) {

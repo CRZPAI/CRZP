@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { Switch, Route, Redirect } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SiteNavbar } from "@/website/components/SiteNavbar";
-import Landing from "./website/pages/Landing";
-import Docs from "./website/pages/Docs";
 import Home from "./app/pages/Home";
 import NotFound from "./pages/not-found";
+
+// Marketing pages are split out so the dashboard (/) loads faster.
+const Landing = lazy(() => import("./website/pages/Landing"));
+const Docs = lazy(() => import("./website/pages/Docs"));
 
 function useTitle(title: string) {
   useEffect(() => { document.title = title; }, [title]);
@@ -29,7 +31,7 @@ function WebsiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative bg-[#020617] text-foreground flex flex-col min-h-screen">
       <SiteNavbar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1"><Suspense fallback={<div className="min-h-screen" />}>{children}</Suspense></main>
     </div>
   );
 }
