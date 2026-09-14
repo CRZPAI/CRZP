@@ -991,17 +991,25 @@ export function GlobeView({
     }
   }, [onCountryClick, pickCountryAt, lat, lon, scheduleResumeAutoSpin]);
 
-  /* Scroll-wheel zoom */
-  const onWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    // Disable scroll zoom when in detail mode (lat/lon focus)
-    if (lat || lon) return;
-    const step = e.deltaY > 0 ? -0.14 : 0.14;
-    const maxZoom = 4.0;
-    targetZoomRef.current = Math.max(0.45, Math.min(maxZoom, targetZoomRef.current + step));
-    autoRef.current = false;
-    scheduleResumeAutoSpin();
-  }, [scheduleResumeAutoSpin]);
+  /* Scroll-wheel zoom.
+     Attached natively with { passive: false } — React's onWheel is passive, so its
+     preventDefault() is ignored and the page would scroll while the globe zooms. */
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const onWheel = (e: WheelEvent) => {
+      // Detail mode (lat/lon focus): no zoom, let the page scroll normally
+      if (lat || lon) return;
+      e.preventDefault();
+      const step = e.deltaY > 0 ? -0.14 : 0.14;
+      const maxZoom = 4.0;
+      targetZoomRef.current = Math.max(0.45, Math.min(maxZoom, targetZoomRef.current + step));
+      autoRef.current = false;
+      scheduleResumeAutoSpin();
+    };
+    canvas.addEventListener("wheel", onWheel, { passive: false });
+    return () => canvas.removeEventListener("wheel", onWheel);
+  }, [lat, lon, scheduleResumeAutoSpin]);
 
   const zoomBy = useCallback((step: number) => {
     // No programmatic zoom while in detail mode
@@ -1106,7 +1114,6 @@ export function GlobeView({
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseLeave}
-        onWheel={onWheel}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
